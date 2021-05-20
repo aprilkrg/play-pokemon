@@ -68,20 +68,17 @@ class Game {
         this.cardDeck = pokeDeck;
         this.roundsPlayed = 0;
         this.cardGraveyard = [];
-    };
+    }
     // === ! Methods ! === //
     welcomePlayers() {
-        return `Today ${this.player.name} will battle ${this.opponent.name}! Good luck trainers!`
-    };
+        console.log(`============ \n Today ${this.player.name} will battle ${this.opponent.name}! \n Good luck trainers! \n============`);
+    }
     dealHands() {
         const hand1 = this.cardDeck.splice(0,3);
         const hand2 = this.cardDeck.splice(0,3);
         this.player.hand.push(hand1);
         this.opponent.hand.push(hand2);
-        console.log(this.cardDeck, 'remaining cards in game.cardDeck <<<');
-        // console.log(this.opponent.hand, 'opponents hand');
-        // console.log(this.player.hand,'player hand');
-    };
+    }
 };
 
 class Player {
@@ -92,17 +89,16 @@ class Player {
         this.hand = [];
         this.playerPoints = 0;
         this.roundsWon = 0;
-    };
+    }
     // === ! Methods ! === //
     sayHello() {
         return `You will be defeated by ${this.name}!`;
-    };
+    }
     displayHand() {
         console.log(`${this.name}'s pokemon for this round are:`)
         for(let i = 0; i < this.hand[0].length; i++) {
-            console.log(`${this.hand[0][i].name} has ${this.hand[0][i].damage} points of damage`)
+            console.log(`--${this.hand[0][i].name} has ${this.hand[0][i].damage} points of damage`)
         }
-        // return this.hand;
     }
 };
 
@@ -113,9 +109,6 @@ const cpu = new Player("the_computer");
 // === ! Instantiate Game ! === //
 const game = new Game(player, cpu);
 
-// game.welcomePlayers();
-// $("button").on("click", game.welcomePlayers);
-
-// game.dealHands();
-console.log(game.dealHands());
-console.log(player.displayHand());
+game.welcomePlayers()
+game.dealHands()
+player.displayHand()
