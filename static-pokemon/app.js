@@ -1,4 +1,4 @@
-console.log("gotta catch them all");
+// console.log("gotta catch them all");
 
 const pokeDeck = [
     {
@@ -92,7 +92,8 @@ class Player {
     }
     // === ! Methods ! === //
     sayHello() {
-        return `You will be defeated by ${this.name}!`;
+        console.log(`"You will be defeated by ${this.name}!"`);
+        this.displayHand()
     }
     displayHand() {
         console.log(`${this.name}'s pokemon for this round are:`)
@@ -100,15 +101,29 @@ class Player {
             console.log(`--${this.hand[0][i].name} has ${this.hand[0][i].damage} points of damage`)
         }
     }
+    pickCard() {
+        // console.log(`Which pokemon do you choose? \n`)
+        // prompt(`Which pokemon do you choose? \n`)
+        let names = [];
+        for(let i = 0; i < this.hand[0].length; i++) {
+            names.push(` ${this.hand[0][i].name}: ${this.hand[0][i].damage} pts`)
+        }
+        console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`))
+        // let answer = prompt.val()
+        // console.log(answer, 'user answer <<<')
+    }
 };
 
 // === ! Instantiate Players ! === //
 const player = new Player("April");
 const cpu = new Player("the_computer");
-
 // === ! Instantiate Game ! === //
 const game = new Game(player, cpu);
 
+
+// === ! Game Start ! === //
 game.welcomePlayers()
 game.dealHands()
-player.displayHand()
+// player.displayHand()
+player.sayHello()
+player.pickCard()
