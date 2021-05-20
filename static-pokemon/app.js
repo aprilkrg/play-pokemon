@@ -102,15 +102,11 @@ class Player {
         }
     }
     pickCard() {
-        // console.log(`Which pokemon do you choose? \n`)
-        // prompt(`Which pokemon do you choose? \n`)
         let names = [];
         for(let i = 0; i < this.hand[0].length; i++) {
             names.push(` ${this.hand[0][i].name}: ${this.hand[0][i].damage} pts`)
         }
         console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`))
-        // let answer = prompt.val()
-        // console.log(answer, 'user answer <<<')
     }
 };
 
@@ -127,3 +123,4 @@ game.dealHands()
 // player.displayHand()
 player.sayHello()
 player.pickCard()
+
