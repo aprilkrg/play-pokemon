@@ -82,6 +82,13 @@ class Game {
     displayStats() {
         console.log(`============ \n Round: ${this.roundsPlayed} \n Cards in the deck: ${this.cardDeck.length} \n Discard pile: ${this.cardGraveyard.length}`)
     }
+    cardBattle() {
+        console.log(`${JSON.stringify(game.player.hand[0])}`, 'player hand');
+        console.log(`${JSON.stringify(game.opponent.hand[0])}`, 'cpu hand');
+        let opponentCard = game.opponent.playCard();
+        let playerCard = game.player.removeCard();
+        console.log(opponentCard, playerCard, `time to battle!`);
+    }
 };
 
 class Player {
@@ -106,11 +113,12 @@ class Player {
     }
     removeCard() {
         let names = [];
-            for (let i = 0; i < game.player.hand[0].length; i++) {
-                names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
-            };
+        for (let i = 0; i < game.player.hand[0].length; i++) {
+            names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
+        };
         let answer;
         // console.log(names, 'these are NAMES')
+
         setTimeout(function () {
             let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
             // console.log(answer, 'answer in pickCard');
@@ -118,11 +126,15 @@ class Player {
             answer--;
             // console.log(answer, typeof answer);
             answer = game.player.hand[0].splice(answer, 1);
-            console.log(answer, typeof answer);
-            console.log(`${JSON.stringify(game.player.hand)}`, 'player hand after pick');
-            if(game.opponent.hand.length > 0) {game.opponent.playCard()};
+            // console.log(answer, typeof answer);
+            // console.log(`${JSON.stringify(game.player.hand)}`, 'player hand after pick');
+            // game.opponent.playCard();
             // return answer;
         }, 500);
+        // console.log(`${JSON.stringify(game.player.hand[0])}`, 'player hand in remove card')
+        // game.cardBattle();
+
+
         // const pickedCard = game.player.hand[0].splice(answer, 1);
         // console.log(`You picked: ${pickedCard}`)
         // console.log(game.player.hand[0].splice(answer, 1));
@@ -134,43 +146,43 @@ class Player {
         // console.log(answer, typeof answer);
         // return answer;
     }
-    pickCard() {
-        // pickCard gives the player the opportunity to choose their card
-        let answer;
-        if (game.player.hand.length > 0) {
-            // let names = [];
-            // for (let i = 0; i < game.player.hand[0].length; i++) {
-            //     names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
-            // };
-            // console.log(`Pokemon to choose from: ${names}`);
-            // let answer;
-            // // console.log(names, 'these are NAMES')
-            // setTimeout(function () {
-            //     let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
-            //     // console.log(answer, 'answer in pickCard');
-            //     answer = Number(answer);
-            //     answer--;
-            //     // console.log(answer, typeof answer);
-            //     answer = game.player.hand[0].splice(answer, 1);
-            //     // console.log(answer, typeof answer);
-            //     return answer;
-            // }, 500);
-            // const pickedCard = game.player.hand[0].splice(answer, 1);
-            // // console.log(`You picked: ${pickedCard}`)
-            // console.log(game.player.hand[0].splice(answer, 1));
+    // pickCard() {
+    //     // pickCard gives the player the opportunity to choose their card
+    //     let answer;
+    //     if (game.player.hand.length > 0) {
+    //         // let names = [];
+    //         // for (let i = 0; i < game.player.hand[0].length; i++) {
+    //         //     names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
+    //         // };
+    //         // console.log(`Pokemon to choose from: ${names}`);
+    //         // let answer;
+    //         // // console.log(names, 'these are NAMES')
+    //         // setTimeout(function () {
+    //         //     let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
+    //         //     // console.log(answer, 'answer in pickCard');
+    //         //     answer = Number(answer);
+    //         //     answer--;
+    //         //     // console.log(answer, typeof answer);
+    //         //     answer = game.player.hand[0].splice(answer, 1);
+    //         //     // console.log(answer, typeof answer);
+    //         //     return answer;
+    //         // }, 500);
+    //         // const pickedCard = game.player.hand[0].splice(answer, 1);
+    //         // // console.log(`You picked: ${pickedCard}`)
+    //         // console.log(game.player.hand[0].splice(answer, 1));
 
-            // // if(answer !== undefined) {
-            // //     console.log(answer, typeof answer, 'outside timeout <<<');
-            // // }
-            // // console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`));
-            // // console.log(answer);
-            // return answer;
-            this.removeCard();
-        } else {
-            console.log("my hand's empty");
-        };
-        // console.log(answer, 'outside the if check')
-    }
+    //         // // if(answer !== undefined) {
+    //         // //     console.log(answer, typeof answer, 'outside timeout <<<');
+    //         // // }
+    //         // // console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`));
+    //         // // console.log(answer);
+    //         // return answer;
+    //         this.removeCard();
+    //     } else {
+    //         console.log("my hand's empty");
+    //     };
+    //     // console.log(answer, 'outside the if check')
+    // }
     playCard() {
         if (game.opponent.hand.length > 0) {
             // playCard is the automatic card selection method for the CPU
@@ -189,8 +201,10 @@ class Player {
             // console.log(`${JSON.stringify(game.cardGraveyard)}`, '<<graveyard');
             // console.log(`${JSON.stringify(this.hand[0])}`, 'cpu hand <<');
             console.log(`${game.opponent.name} plays ${JSON.stringify(playedCard[0])}! \n`);
-            setTimeout(game.player.removeCard(), 4000);
+            // setTimeout(game.player.removeCard(), 4000);
+            return playedCard;
         };
+
     }
 };
 
@@ -214,4 +228,5 @@ player.displayHand()
 // console.log("..... player.pickCard .....")
 // player.pickCard()
 console.log("..... cpu.playCard .....")
-cpu.playCard()
+// cpu.playCard()
+game.cardBattle();
