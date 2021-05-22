@@ -67,6 +67,7 @@ class Game {
         // === ! Attributes ! === //
         this.cardDeck = pokeDeck;
         this.roundsPlayed = 0;
+        this.battleArena = [];
         this.cardGraveyard = [];
     }
     // === ! Methods ! === //
@@ -78,16 +79,32 @@ class Game {
         const hand2 = this.cardDeck.splice(0, 3);
         this.player.hand.push(hand1);
         this.opponent.hand.push(hand2);
+        game.displayStats();
     }
     displayStats() {
-        console.log(`============ \n Round: ${this.roundsPlayed} \n Cards in the deck: ${this.cardDeck.length} \n Discard pile: ${this.cardGraveyard.length}`)
+        console.log(`============ \n Round: ${this.roundsPlayed} \n Cards in the deck: ${this.cardDeck.length} \n Discard pile: ${this.cardGraveyard.length} \n============`)
     }
     cardBattle() {
-        console.log(`${JSON.stringify(game.player.hand[0])}`, 'player hand');
-        console.log(`${JSON.stringify(game.opponent.hand[0])}`, 'cpu hand');
-        let opponentCard = game.opponent.playCard();
-        let playerCard = game.player.removeCard();
-        console.log(opponentCard, playerCard, `time to battle!`);
+        console.log(`============`);
+        game.roundsPlayed++;
+        // console.log(`${JSON.stringify(game.player.hand[0])}`, '<<player hand>>');
+        // console.log(`${JSON.stringify(game.opponent.hand[0])}`, '<<cpu hand>>');
+
+        game.player.displayHand();
+        // let opponentCard = game.player.randomCard();
+        // let opponentCard = game.opponent.hand[0].splice(0, 1);
+
+        // console.log(opponentCard, 'opponent card');
+        // let playerCard = setTimeout(game.player.pickCard(), 2500);
+        // console.log(playerCard, 'player card');
+        const sendToArena = async function() {
+            game.opponent.playCard();
+            game.player.pickCard();
+            console.log( await game.battleArena, 'battle arena');
+        };
+        sendToArena();
+
+        console.log(`============`);
     }
 };
 
@@ -106,46 +123,72 @@ class Player {
         this.displayHand()
     }
     displayHand() {
-        console.log(`${this.name}'s pokemon for Round ${game.roundsPlayed + 1} are:`);
+        console.log(`${this.name}'s pokemon for Round ${game.roundsPlayed} are:`);
         for (let i = 0; i < this.hand[0].length; i++) {
             console.log(`--${this.hand[0][i].name} has ${this.hand[0][i].damage} points of damage`);
         };
     }
-    removeCard() {
+    randomCard() {
+        // let obj = {name: 'april'}
+        // return obj;
+        let card = game.opponent.hand[0].splice(0, 1);
+        game.battleArena.push(card);
+        // how do I add another key to this object? or do I just note it's index? bc it's the computer the index will always be 0 right?
+        return card;
+    }
+    pickCard() {
         let names = [];
         for (let i = 0; i < game.player.hand[0].length; i++) {
             names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
         };
-        let answer;
-        // console.log(names, 'these are NAMES')
+        // console.log(names, 'these are NAMES');
+        let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
+        answer = Number(answer);
+        let card = game.player.hand[0][answer];
+        game.battleArena.push(card);
+        return card;
 
-        setTimeout(function () {
-            let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
-            // console.log(answer, 'answer in pickCard');
-            answer = Number(answer);
-            answer--;
-            // console.log(answer, typeof answer);
-            answer = game.player.hand[0].splice(answer, 1);
-            // console.log(answer, typeof answer);
-            // console.log(`${JSON.stringify(game.player.hand)}`, 'player hand after pick');
-            // game.opponent.playCard();
-            // return answer;
-        }, 500);
-        // console.log(`${JSON.stringify(game.player.hand[0])}`, 'player hand in remove card')
-        // game.cardBattle();
+        // setTimeout(function () {
+        //     let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
+        //     return answer;
+        // }, 2000);
 
-
-        // const pickedCard = game.player.hand[0].splice(answer, 1);
-        // console.log(`You picked: ${pickedCard}`)
-        // console.log(game.player.hand[0].splice(answer, 1));
-
-        // if(answer !== undefined) {
-        //     console.log(answer, typeof answer, 'outside timeout <<<');
-        // }
-        // console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`));
-        // console.log(answer, typeof answer);
-        // return answer;
     }
+    // removeCard() {
+    //     let names = [];
+    //     for (let i = 0; i < game.player.hand[0].length; i++) {
+    //         names.push(` ${i + 1}: ${game.player.hand[0][i].name}(${game.player.hand[0][i].damage} pts)`);
+    //     };
+    //     let answer;
+    //     // console.log(names, 'these are NAMES')
+
+    //     setTimeout(function () {
+    //         let answer = prompt(`${game.player.name}, which pokemon will you choose? \n ${names}`);
+    //         // console.log(answer, 'answer in pickCard');
+    //         answer = Number(answer);
+    //         answer--;
+    //         // console.log(answer, typeof answer);
+    //         answer = game.player.hand[0].splice(answer, 1);
+    //         // console.log(answer, typeof answer);
+    //         // console.log(`${JSON.stringify(game.player.hand)}`, 'player hand after pick');
+    //         // game.opponent.playCard();
+    //         // return answer;
+    //     }, 500);
+    //     // console.log(`${JSON.stringify(game.player.hand[0])}`, 'player hand in remove card')
+    //     // game.cardBattle();
+
+
+    //     // const pickedCard = game.player.hand[0].splice(answer, 1);
+    //     // console.log(`You picked: ${pickedCard}`)
+    //     // console.log(game.player.hand[0].splice(answer, 1));
+
+    //     // if(answer !== undefined) {
+    //     //     console.log(answer, typeof answer, 'outside timeout <<<');
+    //     // }
+    //     // console.log("You've chosen:", prompt(`Which pokemon do you choose? \n${names}`));
+    //     // console.log(answer, typeof answer);
+    //     // return answer;
+    // }
     // pickCard() {
     //     // pickCard gives the player the opportunity to choose their card
     //     let answer;
@@ -198,6 +241,7 @@ class Player {
             let discardCard = playedCard[0];
             // console.log(discardCard, '<discardCard')
             game.cardGraveyard.push(discardCard);
+            game.battleArena.push(discardCard);
             // console.log(`${JSON.stringify(game.cardGraveyard)}`, '<<graveyard');
             // console.log(`${JSON.stringify(this.hand[0])}`, 'cpu hand <<');
             console.log(`${game.opponent.name} plays ${JSON.stringify(playedCard[0])}! \n`);
@@ -222,11 +266,12 @@ console.log("..... game.displayStats .....")
 game.displayStats()
 console.log("..... game.dealHands .....")
 game.dealHands()
-player.displayHand()
+// player.displayHand()
 // console.log("..... player.sayHello .....")
 // player.sayHello()
 // console.log("..... player.pickCard .....")
 // player.pickCard()
-console.log("..... cpu.playCard .....")
+// console.log("..... cpu.playCard .....")
 // cpu.playCard()
+console.log("..... game.cardBattle .....")
 game.cardBattle();
